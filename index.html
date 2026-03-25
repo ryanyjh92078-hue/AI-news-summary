@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBrief | 실시간 IT 뉴스 요약</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="text-2xl font-black text-blue-600 tracking-tight">TechBrief</a>
+                <div class="hidden md:flex gap-6 text-sm font-medium text-gray-500">
+                    <a href="#" class="hover:text-blue-600 transition-colors">최신뉴스</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">기술동향</a>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <input type="text" placeholder="기술 키워드 검색..." 
+                    class="pl-10 pr-4 py-2 border-none bg-gray-100 rounded-full focus:ring-2 focus:ring-blue-400 w-48 md:w-80 transition-all">
+                <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        
+        <section class="mb-12">
+            <a href="detail.html?id=0" class="group block relative overflow-hidden rounded-[2rem] bg-slate-900 text-white p-8 md:p-16 shadow-2xl">
+                <div class="relative z-10">
+                    <span class="inline-block px-4 py-1 rounded-full bg-blue-500 text-xs font-bold mb-6">TODAY'S PICK</span>
+                    <h1 class="text-3xl md:text-5xl font-black mb-6 leading-[1.2] group-hover:text-blue-300 transition-colors">
+                        NVIDIA, 차세대 AI 칩 'Rubin' 공개... <br class="hidden md:block">연산 효율 3배 향상
+                    </h1>
+                    <p class="text-blue-100 text-lg mb-8 max-w-2xl leading-relaxed">
+                        블랙웰 아키텍처를 넘어선 새로운 혁신. 이번 발표가 개발 생태계에 미칠 영향을 AI가 분석했습니다.
+                    </p>
+                    <span class="inline-flex items-center gap-2 font-bold text-white">
+                        요약 읽기 <span class="group-hover:translate-x-2 transition-transform">➔</span>
+                    </span>
+                </div>
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-blue-600 rounded-full blur-[120px] opacity-20"></div>
+            </a>
+        </section>
+
+        <section class="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-hide">
+            <button class="px-6 py-2.5 bg-gray-900 text-white rounded-full font-bold shadow-md">전체</button>
+            <button class="px-6 py-2.5 bg-white border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors">AI & ML</button>
+            <button class="px-6 py-2.5 bg-white border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors">Frontend</button>
+            <button class="px-6 py-2.5 bg-white border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors">Cloud</button>
+        </section>
+
+        <div class="flex justify-between items-end mb-6">
+            <h2 class="text-2xl font-bold italic underline decoration-blue-500 decoration-4 underline-offset-8">Latest Updates</h2>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    
+            <a href="detail.html?id=1" class="group block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <article class="flex flex-col h-full">
+                    <div class="relative aspect-video overflow-hidden bg-gray-200">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI News" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur text-[10px] font-bold rounded-lg shadow-sm text-blue-600 uppercase tracking-wider">AI & Search</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex items-center justify-between mb-3 text-xs font-bold text-gray-400">
+                            <span>TechCrunch</span>
+                            <span>12분 전</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                            OpenAI, 'SearchGPT' 정식 출시... 구글 검색 대항마 될까?
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">
+                            단순 링크 나열이 아닌 질문에 직접 답하는 방식의 새로운 검색 엔진이 공개되었습니다.
+                        </p>
+                        <div class="flex items-center gap-2 border-t pt-4 border-gray-50 mt-auto">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">TB</div>
+                            <span class="text-[11px] font-bold text-gray-500 tracking-tighter">AI 분석 및 요약 완료</span>
+                        </div>
+                    </div>
+                </article>
+            </a>
+        
+            <a href="detail.html?id=2" class="group block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <article class="flex flex-col h-full">
+                    <div class="relative aspect-video overflow-hidden bg-gray-200">
+                        <img src="https://images.unsplash.com/photo-1510511459019-5dee997dd66b?auto=format&fit=crop&w=800&q=80" alt="Apple News" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur text-[10px] font-bold rounded-lg shadow-sm text-blue-600 uppercase tracking-wider">Hardware</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex items-center justify-between mb-3 text-xs font-bold text-gray-400">
+                            <span>The Verge</span>
+                            <span>1시간 전</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                            애플, 자체 제작 서버용 AI 칩 'AC1' 대량 생산 돌입
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">
+                            애플이 자체 데이터 센터 운영을 위한 전용 AI 가속기를 직접 설계했다는 소식입니다.
+                        </p>
+                        <div class="flex items-center gap-2 border-t pt-4 border-gray-50 mt-auto">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">TB</div>
+                            <span class="text-[11px] font-bold text-gray-500 tracking-tighter">AI 분석 및 요약 완료</span>
+                        </div>
+                    </div>
+                </article>
+            </a>
+        
+            <a href="detail.html?id=3" class="group block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <article class="flex flex-col h-full">
+                    <div class="relative aspect-video overflow-hidden bg-gray-200">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80" alt="React News" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur text-[10px] font-bold rounded-lg shadow-sm text-blue-600 uppercase tracking-wider">Development</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex items-center justify-between mb-3 text-xs font-bold text-gray-400">
+                            <span>Hacker News</span>
+                            <span>3시간 전</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                            React 19 RC 버전 발표: 컴파일러 도입으로 성능 극대화
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">
+                            드디어 리액트 컴파일러가 공식 적용되었습니다. 최적화의 새로운 패러다임이 시작됩니다.
+                        </p>
+                        <div class="flex items-center gap-2 border-t pt-4 border-gray-50 mt-auto">
+                            <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">TB</div>
+                            <span class="text-[11px] font-bold text-gray-500 tracking-tighter">AI 분석 및 요약 완료</span>
+                        </div>
+                    </div>
+                </article>
+            </a>
+        
+        </section>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 mt-20 py-10">
+        <div class="max-w-6xl mx-auto px-4 text-center text-gray-400 text-sm">
+            © 2026 TechBrief. AI-powered news summary service.
+        </div>
+    </footer>
+
+</body>
+</html>
