@@ -1,6 +1,6 @@
 // 라이브러리 설치 없이 작성하는 코드
-const CLIENT_ID = 'YOUR_CLIENT_ID';
-const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const CLIENT_ID = '9sUJnKpjJHiBu5F6LRPE';
+const CLIENT_SECRET = 'fGJfW1jbwh';
 
 async function getITNews() {
     const url = 'https://openapi.naver.com/v1/search/news.json?query=IT&display=10';
