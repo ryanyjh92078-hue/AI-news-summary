@@ -1,0 +1,12 @@
+async function loadDetail() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    
+    const res = await fetch(`/api/news/${id}`);
+    const news = await res.json();
+
+    document.getElementById('title').innerText = news.title;
+    document.getElementById('summary').innerText = news.summary;
+    document.getElementById('link').href = news.origin_url;
+}
+window.onload = loadDetail;
