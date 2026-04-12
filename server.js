@@ -7,9 +7,12 @@ app.use(express.static('public'));
 
 // 수집 실행 주소: /admin/collect
 app.get('/admin/collect', (req, res) => {
-    exec('node collect.js', (err, stdout) => {
-        if (err) return res.status(500).send("실패: " + err.message);
-        res.send("<h1>수집 완료!</h1><a href='/'>홈으로 가기</a>");
+    // 결과를 화면에 바로 출력하도록 수정
+    exec('node collect.js', (err, stdout, stderr) => {
+        if (err) {
+            return res.status(500).send(`<h1>❌ 에러 발생</h1><pre>${err.message}</pre>`);
+        }
+        res.send(`<h1>📊 수집 결과</h1><pre>${stdout}</pre><p>이 내용이 비어있다면 API 설정을 확인하세요.</p><a href='/'>홈으로 가기</a>`);
     });
 });
 
