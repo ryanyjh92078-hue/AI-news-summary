@@ -1,67 +1,93 @@
 const express = require('express');
 const { Client } = require('pg');
 const { exec } = require('child_process');
+const path = require('path');
 const app = express();
 
+// 정적 파일(HTML) 서비스
 app.use(express.static('public'));
 
-// 수집 실행 주소: /admin/collect
-// server.js의 app.get('/admin/collect', ...) 부분을 이 코드로 교체하세요.
+/**
+ * 1. 관리자용 뉴스 수집 실행 (502 에러 방지 버전)
+ * 주소: /admin/collect
+ */
 app.get('/admin/collect', (req, res) => {
-    console.log("뉴스 수집 명령 수신됨...");
-    
-    const { exec } = require('child_process');
-    // 명령 실행 후 결과(stdout)와 에러(stderr)를 모두 가로챕니다.
+    console.log("뉴스 수집 명령 수신됨. 백그라운드 작업을 시작합니다...");
+
+    // [중요] 502 에러 방지: 사용자에게 먼저 응답을 보내고 연결을 유지하지 않습니다.
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`
+        <div style="padding: 20px; font-family: sans-serif; line-height: 1.6;">
+            <h2>🚀 뉴스 수집 및 AI 요약을 시작했습니다.</h2>
+            <p>서버가 백그라운드에서 네이버 뉴스를 가져와 Gemini로 요약 중입니다.</p>
+            <p style="color: blue;"><b>약 30초~1분 뒤에 아래 버튼을 눌러 홈으로 가보세요.</b></p>
+            <br>
+            <a href="/" style="display: inline-block; padding: 10px 20px; background: #000; color: #fff; text-decoration: none; border-radius: 5px;">홈으로 가기</a>
+        </div>
+    `);
+
+    // 응답을 보낸 후, 서버 내부에서 조용히 실행
     exec('node collect.js', (err, stdout, stderr) => {
         if (err) {
-            console.error(`실행 에러: ${err.message}`);
-            return res.status(500).send(`
-                <div style="padding:20px; border:1px solid red; font-family:monospace;">
-                    <h2>❌ 실행 에러 발생</h2>
-                    <p>${err.message}</p>
-                    <hr>
-                    <h3>로그 정보 (stderr):</h3>
-                    <pre style="background:#f4f4f4; pading:10px;">${stderr}</pre>
-                </div>
-            `);
+            console.error(`[수집기 실행 실패]: ${err.message}`);
+            return;
         }
-        
-        console.log(`수집 완료: ${stdout}`);
-        res.send(`
-            <div style="padding:20px; border:1px solid green; font-family:monospace;">
-                <h2>✅ 명령 실행 시도 완료</h2>
-                <h3>출력 메시지 (stdout):</h3>
-                <pre style="background:#f4f4f4; padding:10px;">${stdout || "메시지가 없습니다. 코드를 확인하세요."}</pre>
-                <hr>
-                <p>위 메시지에 '모든 뉴스 처리 완료'가 떠야 성공입니다.</p>
-                <a href="/">홈으로 돌아가기</a>
-            </div>
-        `);
+        if (stderr) {
+            console.error(`[수집기 경고/에러]: ${stderr}`);
+        }
+        console.log(`[수집기 결과]:\n${stdout}`);
     });
 });
 
-// 뉴스 목록 API
+/**
+ * 2. 뉴스 목록 API
+ * 주소: /api/news
+ */
 app.get('/api/news', async (req, res) => {
-    const client = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+    const client = new Client({ 
+        connectionString: process.env.DATABASE_URL, 
+        ssl: { rejectUnauthorized: false } 
+    });
+    
     try {
         await client.connect();
-        const result = await client.query('SELECT * FROM news ORDER BY id DESC LIMIT 20');
+        const result = await client.query('SELECT id, title, summary, created_at FROM news ORDER BY id DESC LIMIT 20');
         res.json(result.rows);
+    } catch (err) {
+        console.error("DB 목록 호출 에러:", err);
+        res.status(500).json({ error: "데이터를 불러오지 못했습니다." });
     } finally {
         await client.end();
     }
 });
 
-// 뉴스 상세 API
+/**
+ * 3. 뉴스 상세 API
+ * 주소: /api/news/:id
+ */
 app.get('/api/news/:id', async (req, res) => {
-    const client = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+    const client = new Client({ 
+        connectionString: process.env.DATABASE_URL, 
+        ssl: { rejectUnauthorized: false } 
+    });
+
     try {
         await client.connect();
         const result = await client.query('SELECT * FROM news WHERE id = $1', [req.params.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "뉴스를 찾을 수 없습니다." });
+        }
         res.json(result.rows[0]);
+    } catch (err) {
+        console.error("DB 상세 호출 에러:", err);
+        res.status(500).json({ error: "데이터를 불러오지 못했습니다." });
     } finally {
         await client.end();
     }
 });
 
-app.listen(process.env.PORT || 3000, () => console.log("서버 러닝 중..."));
+// 서버 포트 설정
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`✅ 서버가 포트 ${PORT}에서 실행 중입니다.`);
+});
