@@ -8,7 +8,8 @@ async function runCollector() {
 
     try {
         console.log("1. 뉴스 데이터 가져오는 중...");
-        const naverRes = await fetch(`https://openapi.naver.com/v1/search/news.json?query=IT신기술&display=8`, {
+        // collect.js 중간의 fetch 주소 수정
+            const naverRes = await fetch(`https://openapi.naver.com/v1/search/news.json?query=IT+신제품+출시&display=10&sort=date`, {
             headers: { 
                 'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID, 
                 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET 
