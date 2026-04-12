@@ -6,13 +6,37 @@ const app = express();
 app.use(express.static('public'));
 
 // 수집 실행 주소: /admin/collect
+// server.js의 app.get('/admin/collect', ...) 부분을 이 코드로 교체하세요.
 app.get('/admin/collect', (req, res) => {
-    // 결과를 화면에 바로 출력하도록 수정
+    console.log("뉴스 수집 명령 수신됨...");
+    
+    const { exec } = require('child_process');
+    // 명령 실행 후 결과(stdout)와 에러(stderr)를 모두 가로챕니다.
     exec('node collect.js', (err, stdout, stderr) => {
         if (err) {
-            return res.status(500).send(`<h1>❌ 에러 발생</h1><pre>${err.message}</pre>`);
+            console.error(`실행 에러: ${err.message}`);
+            return res.status(500).send(`
+                <div style="padding:20px; border:1px solid red; font-family:monospace;">
+                    <h2>❌ 실행 에러 발생</h2>
+                    <p>${err.message}</p>
+                    <hr>
+                    <h3>로그 정보 (stderr):</h3>
+                    <pre style="background:#f4f4f4; pading:10px;">${stderr}</pre>
+                </div>
+            `);
         }
-        res.send(`<h1>📊 수집 결과</h1><pre>${stdout}</pre><p>이 내용이 비어있다면 API 설정을 확인하세요.</p><a href='/'>홈으로 가기</a>`);
+        
+        console.log(`수집 완료: ${stdout}`);
+        res.send(`
+            <div style="padding:20px; border:1px solid green; font-family:monospace;">
+                <h2>✅ 명령 실행 시도 완료</h2>
+                <h3>출력 메시지 (stdout):</h3>
+                <pre style="background:#f4f4f4; padding:10px;">${stdout || "메시지가 없습니다. 코드를 확인하세요."}</pre>
+                <hr>
+                <p>위 메시지에 '모든 뉴스 처리 완료'가 떠야 성공입니다.</p>
+                <a href="/">홈으로 돌아가기</a>
+            </div>
+        `);
     });
 });
 
